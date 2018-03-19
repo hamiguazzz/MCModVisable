@@ -23,6 +23,8 @@ public final class MCModControl {
 
 	static final String infoPath = "mcmod.info";
 
+	public static final String defaultPath = "E:\\MC\\1.7.10MOD";
+
 	private final String modPath;
 
 	public MCModControl(String modPath) {

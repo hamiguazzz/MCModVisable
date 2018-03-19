@@ -1,11 +1,13 @@
 package hamigua.MCModVisable;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import hamigua.MCModVisable.core.MCModControl;
 import hamigua.MCModVisable.model.ModInfo;
+import hamigua.MCModVisable.view.MainLayoutControler;
 import hamigua.MCModVisable.view.TablesOverviewControler;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -23,7 +25,7 @@ public class Main extends Application {
 	private Stage primaryStage;
 	private AnchorPane tablesOverview;
 	private ObservableList<ModInfo> modInfos = FXCollections.observableArrayList();;
-	private StringProperty path = new SimpleStringProperty("E:\\MC\\1.7.10MOD");
+	private StringProperty path = new SimpleStringProperty(MCModControl.defaultPath);
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -40,6 +42,10 @@ public class Main extends Application {
 
 	public ObservableList<ModInfo> getModInfosData() {
 		return modInfos;
+	}
+
+	public Stage getPrimaryStage() {
+		return primaryStage;
 	}
 
 	private void readMods() {
@@ -73,6 +79,8 @@ public class Main extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("view/MainLayout.fxml"));
 			mainLayout = (BorderPane) loader.load();
+			MainLayoutControler mainLayoutControler = loader.getController();
+			mainLayoutControler.setMain(this);
 
 			Scene scene = new Scene(mainLayout);
 			primaryStage.setScene(scene);
@@ -85,5 +93,14 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	public void changePath(File path) {
+		if (path == null) {
+			return;
+		}
+		modInfos.clear();
+		this.path.set(path.getAbsolutePath());
+		readMods();
 	}
 }
